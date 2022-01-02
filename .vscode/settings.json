@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "memory": "cpp",
+        "condition_variable": "cpp",
+        "qapplication": "cpp"
+    }
+}

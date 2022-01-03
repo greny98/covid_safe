@@ -17,10 +17,9 @@ private:
   uvc_device_t *dev{};
   uvc_device_handle_t *devh{};
   uvc_stream_ctrl_t ctrl{};
-  static cv::Mat thermal_frame;
 
 public:
-  UvcCom();
+  static cv::Mat thermal_frame;
 
   ~UvcCom();
 

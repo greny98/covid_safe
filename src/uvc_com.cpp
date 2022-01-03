@@ -77,5 +77,5 @@ void UvcCom::callback(uvc_frame_t *frame, void *ptr) {
 
   Mat gray16(120, 160, CV_16UC1, (uint16_t *) frame->data);
   normalize(gray16, thermal_frame, 0, 256, NORM_MINMAX, CV_8U);
-  applyColorMap(thermal_frame, thermal_frame, COLORMAP_RAINBOW);
+  applyColorMap(thermal_frame, thermal_frame, COLORMAP_HOT);
 }

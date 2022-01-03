@@ -4,7 +4,7 @@
 
 #include "uvc_com.h"
 
-cv::Mat UvcCom::thermal_frame(120, 160, CV_8U);
+cv::Mat UvcCom::thermal_frame(120, 160, CV_8UC3);
 
 UvcCom::~UvcCom() {
   using namespace std;
@@ -76,6 +76,7 @@ void UvcCom::callback(uvc_frame_t *frame, void *ptr) {
   using namespace cv;
 
   Mat gray16(120, 160, CV_16UC1, (uint16_t *) frame->data);
-  normalize(gray16, thermal_frame, 0, 256, NORM_MINMAX, CV_8U);
-  applyColorMap(thermal_frame, thermal_frame, COLORMAP_HOT);
+  Mat gray8(120, 160, CV_8UC1);
+  normalize(gray16, gray8, 0, 256, NORM_MINMAX, CV_8U);
+  applyColorMap(gray8, thermal_frame, COLORMAP_HOT);
 }

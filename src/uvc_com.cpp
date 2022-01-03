@@ -4,6 +4,8 @@
 
 #include "uvc_com.h"
 
+cv::Mat UvcCom::thermal_frame(120, 160, CV_8U);
+
 UvcCom::~UvcCom() {
   using namespace std;
   if (devh != nullptr) {

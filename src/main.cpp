@@ -11,7 +11,10 @@ int main(int argc, char const *argv[]) {
     cap >> frame;
     if (frame.empty())
       break;
-    std::cout << frame.size << std::endl;
+    UvcCom::thermal_frame.copyTo(
+        frame(cv::Rect(0, 0,
+                       UvcCom::thermal_frame.cols,
+                       UvcCom::thermal_frame.rows)));
     cv::imshow("frame", frame);
     char c = (char) cv::waitKey(0);
     if (c == 27)

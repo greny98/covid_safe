@@ -16,7 +16,7 @@ int main(int argc, char const *argv[]) {
                        UvcCom::thermal_frame.cols,
                        UvcCom::thermal_frame.rows)));
     cv::imshow("frame", frame);
-    char c = (char) cv::waitKey(0);
+    char c = (char) cv::waitKey(3);
     if (c == 27)
       break;
   }

@@ -5,7 +5,7 @@ int main(int argc, char const *argv[]) {
   uvc_com.init();
   uvc_com.stream();
 
-  cv::VideoCapture cap(0);
+  cv::VideoCapture cap(2);
   while (cap.isOpened()) {
     cv::Mat frame;
     cap >> frame;

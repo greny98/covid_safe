@@ -7,17 +7,27 @@ project(${PROJECT_NAME} VERSION 1.0)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 find_package(OpenCV REQUIRED)
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SRC_FILES} src/uvc_com.cpp include/uvc_com.h)
+add_executable(${PROJECT_NAME} ${SRC_FILES})
 target_include_directories(
   ${PROJECT_NAME} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${OpenCV_INCLUDE_DIRS}
   /usr/local/include/libuvc
 )
-target_include_directories(${PROJECT_NAME} PUBLIC ${OpenCV_INCLUDE_DIRS})
+
+if (APPLE)
+  message("Mac config")
+  include_directories(/Users/tuannguyen/workspace/tflite-dist/include)
+  ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
+  set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
+    /Users/tuannguyen/workspace/tflite-dist/libs/mac/libtensorflowlite.dylib)
+  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib tensorflowlite)
+else()
+  message("Linux config")
+  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.so)
+endif ()
+
 target_link_libraries(${PROJECT_NAME}
   ${OpenCV_LIBS}
-  /usr/local/lib/libuvc.dylib
-  #    /usr/local/lib/libuvc.so
-  )
+  tensorflowlite)

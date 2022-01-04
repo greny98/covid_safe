@@ -20,6 +20,7 @@ private:
 
 public:
   static cv::Mat thermal_frame;
+  static cv::Mat thermal_info;
 
   ~UvcCom();
 
@@ -28,6 +29,8 @@ public:
   void stream();
 
   static void callback(uvc_frame_t *frame, void *ptr);
+
+  static double GetTemp(cv::Rect roi);
 };
 
 #endif //COVID_SAFE_UVC_COM_H

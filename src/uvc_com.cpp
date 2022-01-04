@@ -5,6 +5,7 @@
 #include "uvc_com.h"
 
 cv::Mat UvcCom::thermal_frame(120, 160, CV_8UC3);
+cv::Mat UvcCom::thermal_info(120, 160, CV_8UC3);
 
 UvcCom::~UvcCom() {
   using namespace std;
@@ -75,8 +76,17 @@ void UvcCom::callback(uvc_frame_t *frame, void *ptr) {
   using namespace std;
   using namespace cv;
 
-  Mat gray16(120, 160, CV_16UC1, (uint16_t *) frame->data);
+  thermal_info = cv::Mat(120, 160, CV_16UC1, (uint16_t *) frame->data);
   Mat gray8(120, 160, CV_8UC1);
-  normalize(gray16, gray8, 0, 256, NORM_MINMAX, CV_8U);
+  normalize(thermal_info, gray8, 0, 256, NORM_MINMAX, CV_8UC1);
   applyColorMap(gray8, thermal_frame, COLORMAP_HOT);
+}
+
+double UvcCom::GetTemp(cv::Rect roi) {
+  cv::Mat sub(thermal_info(roi));
+  double maxVal{};
+  cv::max(sub, maxVal);
+  maxVal = (maxVal - 27315) / 100;
+  std::cout << maxVal << std::endl;
+  return maxVal;
 }

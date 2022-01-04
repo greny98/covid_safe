@@ -22,11 +22,17 @@ if (APPLE)
   ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
   set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
     /Users/tuannguyen/workspace/tflite-dist/libs/mac/libtensorflowlite.dylib)
-  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib tensorflowlite)
+  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib)
 else()
   message("Linux config")
   target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.so)
+  include_directories(/home/pi/workspace/tflite-dist/include)
+  ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
+  set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
+    /home/pi/workspace/tflite-dist/lib/libtensorflow-lite.a)
+  
 endif ()
 
 target_link_libraries(${PROJECT_NAME}
-  ${OpenCV_LIBS})
+  ${OpenCV_LIBS}
+  tensorflowlite)

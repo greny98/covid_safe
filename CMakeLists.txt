@@ -29,5 +29,4 @@ else()
 endif ()
 
 target_link_libraries(${PROJECT_NAME}
-  ${OpenCV_LIBS}
-  tensorflowlite)
+  ${OpenCV_LIBS})

@@ -25,7 +25,7 @@ if (APPLE)
   target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib)
 else()
   message("Linux config")
-  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.so)
+  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.a)
   include_directories(/home/pi/workspace/tflite-dist/include)
   ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
   set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION

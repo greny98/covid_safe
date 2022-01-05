@@ -22,17 +22,20 @@ if (APPLE)
   ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
   set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
     /Users/tuannguyen/workspace/tflite-dist/libs/mac/libtensorflowlite.dylib)
-  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib)
+  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib tensorflowlite)
 else()
   message("Linux config")
-  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.a)
-  include_directories(/home/pi/workspace/tflite-dist/include)
-  ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
-  set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
-    /home/pi/workspace/tflite-dist/lib/libtensorflow-lite.a)
-  
+  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -lm -ldl")
+  # target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
+  include_directories(/usr/local/include/tensorflow)
+  include_directories(/usr/local/include/flatbuffers)
+  target_link_libraries(${PROJECT_NAME} -ldl "/usr/local/lib/libtensorflow-lite.so")
+  target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.so)
+
+  # ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
+  # set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
+  #   /usr/local/lib/libtensorflow-lite.a)  
 endif ()
 
 target_link_libraries(${PROJECT_NAME}
-  ${OpenCV_LIBS}
-  tensorflowlite)
+  ${OpenCV_LIBS})

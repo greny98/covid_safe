@@ -8,7 +8,7 @@ project(${PROJECT_NAME} VERSION 1.0)
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 find_package(OpenCV REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(${PROJECT_NAME} ${SRC_FILES} src/lite.cpp include/lite.h)
 target_include_directories(
   ${PROJECT_NAME} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include

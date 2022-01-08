@@ -13,7 +13,7 @@ void Lite::init() {
     throw std::runtime_error("Interpreter Builder failed");
   if (interpreter->AllocateTensors() != kTfLiteOk)
     throw std::runtime_error("Allocate failed");
-  interpreter->SetNumThreads(4);
+  interpreter->SetNumThreads(2);
 }
 
 void Lite::preprocess(cv::Mat &img_inp, cv::Mat &img_out) {
@@ -49,10 +49,10 @@ void Lite::predict(cv::Mat &img, float threshold_score) {
     if (max_score > threshold_score) {
       size_t box_start = box * BOX_DIMS;
       std::cout << boxes_tensor[box_start] << std::endl;
-      float xmin = boxes_tensor[box_start] * (float) img.cols / WIDTH;
-      float ymin = boxes_tensor[box_start + 1] * (float) img.rows / HEIGHT;
-      float xmax = boxes_tensor[box_start + 2] * (float) img.cols / WIDTH;
-      float ymax = boxes_tensor[box_start + 3] * (float) img.rows / HEIGHT;
+      float xmin = boxes_tensor[box_start];
+      float ymin = boxes_tensor[box_start + 1];
+      float xmax = boxes_tensor[box_start + 2];
+      float ymax = boxes_tensor[box_start + 3];
       boxes.push_back(
           cv::Rect(
               cv::Point((int) xmin, (int) ymin),

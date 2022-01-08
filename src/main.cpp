@@ -4,7 +4,6 @@
 #include <chrono>
 
 int main(int argc, char const *argv[]) {
-  using namespace std::chrono;
   // Model
   Lite lite{};
   lite.init();
@@ -12,9 +11,8 @@ int main(int argc, char const *argv[]) {
   UvcCom uvc_com{};
   uvc_com.init();
   uvc_com.stream();
-  cv::VideoCapture cap(0);
+  cv::VideoCapture cap(2);
   while (cap.isOpened()) {
-    auto start = high_resolution_clock::now();
     cv::Mat frame;
     cap >> frame;
     if (frame.empty())
@@ -46,9 +44,6 @@ int main(int argc, char const *argv[]) {
                        UvcCom::thermal_frame.cols,
                        UvcCom::thermal_frame.rows)));
     cv::imshow("frame", frame);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    std::cout << "FPS: " << 1000.0 / (double) duration.count() << std::endl;
     char c = (char) cv::waitKey(2);
     if (c == 27)
       break;

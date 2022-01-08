@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
       float x = (float) box.x * (float) n_cols / 160;
       float width = (float) box.width * (float) n_cols / 160;
       float y = (float) box.y * (float) n_rows / 160;
-      float height = (float) box.height * (float) n_cols / 160;
+      float height = (float) box.height * (float) n_rows / 160;
       cv::Rect truth_box = cv::Rect((int) x, (int) y, (int) width, (int) height);
       cv::Scalar color(0, 255, 0);
       if (bbox.get_label() != 0)

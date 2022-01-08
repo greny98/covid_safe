@@ -25,16 +25,14 @@ if (APPLE)
   target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.dylib tensorflowlite)
 else()
   message("Linux config")
-  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -lm -ldl")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -lm -ldl")
   # target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
-  include_directories(/usr/local/include/tensorflow)
-  include_directories(/usr/local/include/flatbuffers)
-  target_link_libraries(${PROJECT_NAME} -ldl "/usr/local/lib/libtensorflow-lite.so")
+  include_directories(/home/pi/workspace/tflite-dist/include)
   target_link_libraries(${PROJECT_NAME} /usr/local/lib/libuvc.so)
 
-  # ADD_LIBRARY(tensorflowlite SHARED IMPORTED)
-  # set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION
-  #   /usr/local/lib/libtensorflow-lite.a)  
+  ADD_LIBRARY(tensorflowlite STATIC IMPORTED)
+  set_property(TARGET tensorflowlite PROPERTY IMPORTED_LOCATION /home/pi/workspace/tflite-dist/lib/libtensorflow-lite.a)
+  target_link_libraries(${PROJECT_NAME} tensorflowlite)
 endif ()
 
 target_link_libraries(${PROJECT_NAME}

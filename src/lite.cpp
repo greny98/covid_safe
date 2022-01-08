@@ -16,7 +16,7 @@ void Lite::init() {
   interpreter->SetNumThreads(2);
 }
 
-void Lite::preprocess(cv::Mat &img_inp, cv::Mat &img_out) {
+void Lite::preprocess(cv::Mat &img_inp, cv::Mat &img_out) const {
   cv::Mat img_tensor;
   img_inp.convertTo(img_out, CV_32FC3);
   cv::resize(img_out, img_out, cv::Size(WIDTH, HEIGHT));
@@ -25,8 +25,7 @@ void Lite::preprocess(cv::Mat &img_inp, cv::Mat &img_out) {
 }
 
 void Lite::predict(cv::Mat &img, float threshold_score) {
-  boxes = std::vector<cv::Rect>{};
-  cls = std::vector<int>{};
+  bboxes = std::vector<BoundingBox>{};
   memcpy(
       interpreter->typed_input_tensor<float>(0),
       &img.ptr<float>()[0], WIDTH * HEIGHT * CHANNELS * sizeof(float));
@@ -48,28 +47,28 @@ void Lite::predict(cv::Mat &img, float threshold_score) {
     }
     if (max_score > threshold_score) {
       size_t box_start = box * BOX_DIMS;
-      std::cout << boxes_tensor[box_start] << std::endl;
       float xmin = boxes_tensor[box_start];
       float ymin = boxes_tensor[box_start + 1];
       float xmax = boxes_tensor[box_start + 2];
       float ymax = boxes_tensor[box_start + 3];
-      boxes.push_back(
-          cv::Rect(
-              cv::Point((int) xmin, (int) ymin),
-              cv::Point((int) xmax, (int) ymax)
-          ));
-      cls.push_back(pred_label);
+      cv::Rect _box(
+      cv::Point((int) xmin, (int) ymin),
+          cv::Point((int) xmax, (int) ymax)
+      );
+
+      BoundingBox bbox(
+          _box,
+          max_score,
+          pred_label);
+      bboxes.push_back(bbox);
     }
   }
 }
 
-std::vector<cv::Rect> Lite::get_boxes() {
-  return boxes;
+std::vector<BoundingBox> Lite::get_boxes() {
+  return bboxes;
 }
 
-std::vector<int> Lite::get_cls() {
-  return cls;
-}
 
 
 

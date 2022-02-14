@@ -15,6 +15,10 @@ int main(int argc, char const *argv[]) {
   while (cap.isOpened()) {
     cv::Mat frame;
     cap >> frame;
+    UvcCom::thermal_frame.copyTo(
+        frame(cv::Rect(0, 0,
+                       UvcCom::thermal_frame.cols,
+                       UvcCom::thermal_frame.rows)));
     if (frame.empty())
       break;
 
@@ -39,10 +43,6 @@ int main(int argc, char const *argv[]) {
       cv::rectangle(frame, truth_box, color, 2);
     }
 
-    UvcCom::thermal_frame.copyTo(
-        frame(cv::Rect(0, 0,
-                       UvcCom::thermal_frame.cols,
-                       UvcCom::thermal_frame.rows)));
     cv::imshow("frame", frame);
     char c = (char) cv::waitKey(2);
     if (c == 27)

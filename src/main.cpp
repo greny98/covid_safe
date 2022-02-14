@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]) {
     cv::Mat image_tensor;
     lite.preprocess(frame, image_tensor);
     lite.predict(image_tensor);
-    std::vector<BoundingBox> bboxes = lite.get_boxes();
+    std::vector <BoundingBox> bboxes = lite.get_boxes();
     NonMaxSuppression(bboxes, 0.6);
 
     size_t n_cols = frame.cols;
@@ -40,6 +40,9 @@ int main(int argc, char const *argv[]) {
       cv::Scalar color(0, 255, 0);
       if (bbox.get_label() != 0)
         color = cv::Scalar(0, 0, 255);
+      cv::Rect temp_loc = cv::Rect((int) x / 4, (int) y / 4, (int) width / 4, (int) height / 4);
+      double temp = uvc_com::GetTemp(temp_loc);
+      std::cout << "Temp" << std::endl;
       cv::rectangle(frame, truth_box, color, 2);
     }
 
